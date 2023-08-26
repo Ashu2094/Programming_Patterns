@@ -1,0 +1,52 @@
+class Solution {
+public:
+    // int solve(int i,int prev,int m,vector<int>& pos){
+    //     if(m==0){
+    //         return INT_MAX;
+    //     }
+    //     if(i==pos.size()){
+    //         if(m==0)
+    //         return INT_MAX;
+    //         return INT_MIN;
+    //     }
+        
+    //     int put = min(solve(i+1,i,m-1,pos),prev==-1?INT_MAX:pos[i]-pos[prev]);
+    //     int notPut = solve(i+1,prev,m,pos);
+    //     return max(put,notPut);
+    // }
+    int maxDistance(vector<int>& position, int m) {
+        // sort(position.begin(),position.end()); 
+        // return solve(0,-1,m,position);
+
+        // TLE approach using dp
+        sort(position.begin(),position.end()); 
+        int high = position[position.size()-1] - position[0];
+        int low  = 1;
+        // cout<<low<<" "<<(low+high)/2<<" "<<high<<endl;
+
+        while(low<=high){
+            int cows = m-1;
+            int i = 1;
+            int prev=0;
+            int midDist = low + (high - low)/2;
+            while(i<position.size() and m>0){
+                if(position[i]-position[prev]>=midDist){
+                    prev=i;
+                    i++;
+                    cows--;
+                }else{
+                    i++;
+                }
+            }
+            cout<<low<<" "<<midDist<<" "<<high<<" "<<cows<<endl;
+            if(cows<=0){
+                low=midDist+1;
+                
+            }else{
+                high=midDist-1;
+            }  
+        }
+        return high;
+
+    }
+};
